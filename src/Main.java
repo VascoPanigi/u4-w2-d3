@@ -18,7 +18,24 @@ public class Main {
 
 
 //        --------------------------------ex 2---------------------------
+        List<Product> booksList = productList.stream()
+                .filter(product -> product.getCategory().equals(Categories.BOOKS))
+                .toList();
+        System.out.println(booksList);
 
+        //        --------------------------------ex 3---------------------------
+
+        List<Product> boysProductList = productList.stream()
+                .filter(product -> product.getCategory().equals(Categories.BOYS))
+                .map(product -> {
+                    product.setPrice(product.getPrice() * 0.9);
+                    return product;
+                }).
+                toList();
+
+        System.out.println(boysProductList);
+
+        //        --------------------------------ex 4---------------------------
 
     }
 
@@ -34,7 +51,7 @@ public class Main {
 
         for (int i = 0; i < 100; i++) {
             Product newProduct = productSupplier.get();
-            if (newProduct.getPrice() < 100) {
+            if (newProduct.getPrice() > 100) {
                 productList.add(newProduct);
             }
         }
