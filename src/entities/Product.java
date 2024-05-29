@@ -15,4 +15,29 @@ public class Product {
         this.price = price;
     }
 
+    public Double getPrice() {
+        return price;
+    }
+
+    public Categories getCategory() {
+        return category;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", category=" + category +
+                '}';
+    }
 }
