@@ -27,9 +27,10 @@ public class Main {
     private static List<Product> getProducts(Random random, Supplier<Double> randomPriceSupplier) {
         Supplier<Long> randomIdSupplier = () -> random.nextLong(10000, 20000);
 
+
         List<Product> productList = new ArrayList<>();
 
-        Supplier<Product> productSupplier = () -> new Product(randomIdSupplier.get(), "Hello, I'm a book :D", Categories.BOOKS, randomPriceSupplier.get());
+        Supplier<Product> productSupplier = () -> new Product(randomIdSupplier.get(), "Hello, I'm a book :D", randomCategory(), randomPriceSupplier.get());
 
         for (int i = 0; i < 100; i++) {
             Product newProduct = productSupplier.get();
@@ -39,4 +40,25 @@ public class Main {
         }
         return productList;
     }
+
+
+    private static Categories randomCategory() {
+        Random random = new Random();
+        int randomNum = random.nextInt(1, 4);
+        Categories category = Categories.BOOKS;
+
+        switch (randomNum) {
+            case 2:
+                category = Categories.BABY;
+                break;
+            case 3:
+                category = Categories.BOYS;
+                break;
+            default:
+                break;
+        }
+
+        return category;
+    }
+
 }
