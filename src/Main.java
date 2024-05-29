@@ -10,9 +10,8 @@ public class Main {
     public static void main(String[] args) {
 
 //        --------------------------------ex 1---------------------------
-        Random random = new Random();
-        Supplier<Double> randomPriceSupplier = () -> random.nextDouble(1, 300);
-        List<Product> productList = getProducts(random, randomPriceSupplier);
+
+        List<Product> productList = getProducts();
 
         System.out.println(productList);
 
@@ -37,11 +36,16 @@ public class Main {
 
         //        --------------------------------ex 4---------------------------
 
+
     }
 
     //        --------------------------------ex 1 method---------------------------
 
-    private static List<Product> getProducts(Random random, Supplier<Double> randomPriceSupplier) {
+    private static List<Product> getProducts() {
+        Random random = new Random();
+
+        Supplier<Double> randomPriceSupplier = () -> random.nextDouble(1, 300);
+
         Supplier<Long> randomIdSupplier = () -> random.nextLong(10000, 20000);
 
 
