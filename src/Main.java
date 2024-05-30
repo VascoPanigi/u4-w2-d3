@@ -1,6 +1,9 @@
+import entities.Customer;
+import entities.Order;
 import entities.Product;
 import enums.Categories;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -36,6 +39,17 @@ public class Main {
 
         //        --------------------------------ex 4---------------------------
 
+
+        List<Customer> customersList = getCustomersList();
+
+        System.out.println(customersList);
+
+        List<Order> orderList = placeOrders(customersList, productList);
+        System.out.println("ORDERS: " + orderList);
+
+
+        List<Product> productListFilteredByTierAndDate = getSpecificTierOrderList(orderList);
+        System.out.println("TIER 2 ORDERS: " + productListFilteredByTierAndDate);
 
     }
 
@@ -80,6 +94,62 @@ public class Main {
         }
 
         return category;
+    }
+
+
+    public static List<Customer> getCustomersList() {
+        Random random = new Random();
+
+        Supplier<Long> randomIdSupplier = () -> random.nextLong(10000, 20000);
+        Supplier<Integer> randomTierSupplier = () -> random.nextInt(1, 3);
+
+        List<Customer> customersList = new ArrayList<>();
+
+        Supplier<Customer> customerSupplier = () -> new Customer(randomIdSupplier.get(), randomTierSupplier.get(), "pippo");
+
+        for (int i = 0; i < 100; i++) {
+            Customer newCustomer = customerSupplier.get();
+
+            customersList.add(newCustomer);
+
+        }
+        return customersList;
+    }
+
+
+    public static List<Order> placeOrders(List<Customer> customersList, List<Product> productList) {
+        Random random = new Random();
+
+        Supplier<Long> randomIdSupplier = () -> random.nextLong(10000, 20000);
+
+        Supplier<Integer> randomLengthSupplier = () -> random.nextInt(1, 6);
+        Supplier<Integer> randomProductIndexSupplier = () -> random.nextInt(0, 50);
+
+        List<Product> currentClientProductList = new ArrayList<>();
+
+        for (int i = 0; i < randomLengthSupplier.get(); i++) {
+            currentClientProductList.add(productList.get(randomProductIndexSupplier.get()));
+        }
+
+        List<Order> orderList = new ArrayList<>();
+        for (Customer currentCustomer : customersList) {
+            Order currentOrder = new Order(randomIdSupplier.get(), currentClientProductList, currentCustomer);
+            orderList.add(currentOrder);
+        }
+        return orderList;
+    }
+
+    public static List<Product> getSpecificTierOrderList(List<Order> orderList) {
+        List<Order> filteredByDateAndTier = orderList.stream().filter(order -> order.getCustomer().getTier() == 2
+                        && order.getOrderDate().isBefore(LocalDate.parse("2024-06-29"))
+                        && order.getOrderDate().isAfter(LocalDate.parse("2024-05-29")))
+                .toList();
+
+        List<Product> products = new ArrayList<>();
+        for (Order order : filteredByDateAndTier) {
+            products.addAll(order.getProducts());
+        }
+        return products;
     }
 
 }
